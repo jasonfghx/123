@@ -1,0 +1,25 @@
+
+
+
+a=os.listdir("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\KYMA");
+
+
+
+jtemp1=np.zeros(800000)
+jtemp1=pd.DataFrame(jtemp1)
+jtemp1.columns=(["time"])
+jtemp1["type"]=None
+
+base_dir = ("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\VDR\\")
+a=a[437:541]   
+for fi in a[0:1]:
+    data = pd.read_csv(os.path.join(base_dir, fi), sep="/n", header = None)
+    
+    for j in range(0,len(data)):
+        if data.iloc[j,0][len(data.iloc[j,0])-1]=="2" :
+            temp=data[0][j].split(",")[0]
+            if data[0][j].split(",")[1]=="SDDPT":
+                k=k+1
+                
+
+
