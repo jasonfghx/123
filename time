@@ -1,0 +1,32 @@
+import os
+import pandas as pd
+import numpy  as np
+from datetime import datetime
+from datetime import timedelta
+
+a=os.listdir("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\MFM");
+b=a[2:4647]
+base_dir_MFM = ("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\MFM\\")
+data = pd.read_csv(os.path.join(base_dir_MFM, b[0]), sep="/n", header = None)
+temp=
+temp1=data[0][1].split(",")[0]
+date=
+date_end=
+
+(date_end-date).seconds
+jtemp1=np.zeros(800000)
+jtemp1=pd.DataFrame(jtemp1)
+jtemp1.columns=(["file name"])
+jtemp1["time"]=None
+jtemp1["type"]=None
+k=0
+for fi in b[0:5]:
+    data = pd.read_csv(os.path.join(base_dir_MFM, fi), sep="/n", header = None)
+    
+    for  i in range(0,len(data)-1):
+        if (datetime.strptime(data[0][i+1].split(",")[0],'%Y-%m-%d %H:%M:%S')-datetime.strptime(data[0][i].split(",")[0],'%Y-%m-%d %H:%M:%S')).seconds!=10:
+            print(data[0][i])
+            print(data[0][i+1])
+            jtemp1.iloc[k,0]=data[0][i]
+            jtemp1.iloc[k+1,0]=data[0][i+1]
+            k=k+2
