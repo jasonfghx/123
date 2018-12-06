@@ -9,3 +9,4 @@ for j in range(0,len(a1)):
 
 刪list 元素
 del a1_new[413]    8
+sto_save=pd.DataFrame({"file":store}) 
