@@ -1,3 +1,8 @@
 f = open(os.path.join(base__dir,"Na-A20160101-001.csv"),"r")
   for i in f.readlines()[0:10]:
       print (i)
+
+
+for j in range(0,len(a1)):
+    if a1[j][0:2]=="Na":
+        a1_new.append(a1[j])
