@@ -1,5 +1,26 @@
 import pandas as pd
 
+f = open("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\AMS\\Na-A20181206-001.csv","rb")
+c=str(f.readlines()[8])
+c=c.strip('"')
+li=c.split(",")
+len(li)
+yao=li[1:25]
+yao.insert(0,"num")
+yao.insert(1,"text")
+yao.insert(2,"unit")
+
+a=pd.read_csv(os.path.join(base___dir,"Na-A20181206-001.csv"),sep=",",names=yao,skiprows=9,engine="python") 
+a=a.drop(0,axis=0)
+a.iloc[246,11].count("R")>=1
+qlist=pd.DataFrame()
+qlist=a.iloc[1:2,:]
+for i in range(1,a.shape[0]):
+    for j in range(3,a.shape[1]):
+        if a.iloc[i,j].count("R")>=1:
+            qlist=qlist.append(a.iloc[i,:])
+            break
+
 a=pd.read_csv("Na-A20181206-001.csv",sep=",",skiprows=9,names=time,encoding="ANSI") 
 
 a=a.drop(0,axis=0)
