@@ -24,3 +24,44 @@ for fi in a[10:20]:
             k=k+1
             jtemp1.to_csv("D:\\桌面\\1234.csv")      
                 
+====================for gg computer=======================
+import os
+import numpy as np
+
+import pandas as pd
+
+aaa.to_csv("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\KYMA\\result_SA8_2.csv")       
+ 
+a=os.listdir("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\VDR");
+base_dir = ("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\VDR\\")
+a1_new=[]
+for j in range(0,len(a)):
+    if a[j][0:4]=="SI04":
+        a1_new.append(a[j])
+del a1_new[47]
+a=a[465:576]
+k=0 
+  
+
+jtemp1=np.zeros(800000)
+jtemp1=pd.DataFrame(jtemp1)
+jtemp1.columns=(["file name"])
+jtemp1["time"]=None
+jtemp1["type"]=None
+ 
+            
+           new=[ 55 ,116 ,56 ,67, 6]
+           
+           
+for fi in new:
+    data = pd.read_csv(os.path.join(base_dir, a1_new[fi]), sep="/n", header = None)
+    print(len(data))
+    
+    for j in range(7679,len(data)):
+        if data[0][j].split(",")[1]!="PPLAN" and data[0][j].split(",")[1]!="HEHDT" and data[0][j].split(",")[1]!="GPGGA" and data[0][j].split(",")[1]!="HCHDM" and data[0][j].split(",")[1]!="TIROT" and data[0][j].split(",")[1]!="VDVBW":
+            jtemp1.iloc[k,0]=fi
+            jtemp1.iloc[k,1]=data[0][j]
+            #jtemp1.iloc[k,2]=data[0][j].split(",")[1]
+            print(k,jtemp1.iloc[k,1])
+            k=k+1
+            jtemp1.to_csv("C:\\Users\\user\\Desktop\\1234.csv")  
