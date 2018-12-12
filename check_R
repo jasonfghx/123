@@ -34,4 +34,44 @@ for i in range(1,a.shape[0]):
             break
         
 bb=qlist.drop(2,axis=0)
-    bb.to_csv("sample.csv",sep=",",encoding="ANSI")        
+    bb.to_csv("sample.csv",sep=",",encoding="ANSI")      
+    
+    
+add=os.listdir("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\AMS\\");
+
+a1_new=[]
+
+for j in range(0,len(add)):
+    if add[j][0:10]=="Na-A201812":
+        a1_new.append(add[j])
+        
+base___dir="Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\AMS\\"
+a=pd.read_csv(os.path.join(base___dir,"Na-A20181206-001.csv"),sep=",",names=yao,skiprows=9,engine="python") 
+a=a.drop(0,axis=0)
+#a.iloc[246,11].count("R")>=1
+
+aa=a.copy()
+
+for k in a1_new:
+    qlist=aa.iloc[1:2,:]
+    print(k)
+    a=pd.read_csv(os.path.join(base___dir,k),sep=",",names=yao,skiprows=9,engine="python") 
+    a=a.drop(0,axis=0)
+    for i in range(1,a.shape[0]):
+        for j in range(3,a.shape[1]):
+            if a.iloc[i,j].count("R")>=1:
+                qlist=qlist.append(a.iloc[i,:])
+                break        
+    bb=qlist.drop(1,axis=0)
+    bb.to_csv("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\AMS\\其他\\"+k,sep=",",encoding="ANSI")
+        
+f = open("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\AMS\\"+a1_new[0],"rb")
+c=str(f.readlines()[8])
+cccc=c.replace('"',"")
+li=cccc.split(",")
+len(li)
+yao=li[1:25]
+yao.insert(0,"num")
+yao.insert(1,"text")
+yao.insert(2,"unit")        
+    
