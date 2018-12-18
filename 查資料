@@ -1,0 +1,298 @@
+import os
+import pandas as pd
+import numpy  as np
+from datetime import datetime
+from datetime import timedelta
+
+
+
+(date_end-date).seconds
+jtemp1=np.zeros(8533)
+jtemp1=pd.DataFrame(jtemp1)
+jtemp1.columns=(["text"])
+
+
+jtemp1["time"]=None
+jtemp1["type"]=None
+k=0
+for fi in b[0:5]:
+    data = pd.read_csv(os.path.join(base_dir_MFM, fi), sep="/n", header = None)
+    
+    for  i in range(0,len(data)-1):
+        if (datetime.strptime(data[0][i+1].split(",")[0],'%Y-%m-%d %H:%M:%S')-datetime.strptime(data[0][i].split(",")[0],'%Y-%m-%d %H:%M:%S')).seconds!=10:
+            print(data[0][i])
+            print(data[0][i+1])
+            jtemp1.iloc[k,0]=data[0][i]
+            jtemp1.iloc[k+1,0]=data[0][i+1]
+            k=k+2
+            
+
+
+
+
+    
+
+
+print(date)
+alist=list(range(0,17102,2))
+len(alist)
+
+
+a=os.listdir("");
+a=a[116:]
+    i=0
+    for d in a:
+        print(i,d)
+        i=i+1
+base_dir_kyma="Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\KYMA\\"
+      
+
+
+for iii in range(0,len(a)):
+    df1 = pd.read_csv(base_dir_kyma+a[6], sep="/n", header = None)  
+           
+
+
+jtemp1=np.zeros(int(17102/2)+1)
+jtemp1=pd.DataFrame(jtemp1)
+jtemp1.columns=(["text"])
+print()
+
+date=datetime.strptime(aa,'%Y-%m-%d %H:%M:%S')
+date1=datetime.strptime(aa,'%Y-%m-%d %H:%M:%S')
+(date1-date).seconds
+
+
+
+k=0
+for l in alist:
+    jtemp1.iloc[k,0]=df1.iloc[l,0]
+    k=k+1
+jtemp2=jtemp1.iloc[0:8551,:]
+k=0
+app=[]
+#i=212
+for i in range(0,len(jtemp2)-1):
+    aa1=jtemp2["text"][i].split(",")[0]        
+    aa2=jtemp2["text"][i+1].split(",")[0]        
+    date=datetime.strptime(aa1,'%Y-%m-%d %H:%M:%S')
+    date1=datetime.strptime(aa2,'%Y-%m-%d %H:%M:%S')
+    ch=(date1-date).seconds
+    if ch !=10:
+        print(i)
+        app.append(i)
+        k=k+1
+        k=0
+        for ii in app:
+            jtemp3.iloc[k,0]=jtemp2.iloc[ii,0]
+            jtemp3.iloc[k+1,0]=jtemp2.iloc[ii+1,0]
+            k=k+2
+jtemp3 =np.zeros(99*2+2)
+jtemp3=pd.DataFrame(jtemp3)
+jtemp3.columns=(["text"])           
+     tempf=jtemp1.iloc[0:178,:]
+tempf.to_csv("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\KYMA\\其他\\"+a[6][4:12]+".csv")
+temp_file=pd.read_csv("temp_file1.csv",index_col=0)
+DATE1=a[0][5]+a[0][6]+a[0][7]+a[0][8]+a[0][10]+a[0][11]+a[0][13]+a[0][14]        
+DATE2=a[1][5]+a[1][6]+a[1][7]+a[1][8]+a[1][10]+a[1][11]+a[1][13]+a[1][14]
+DATE3=a[2][5]+a[2][6]+a[2][7]+a[2][8]+a[2][10]+a[2][11]+a[2][13]+a[2][14]
+k=0
+ind_te=np.zeros(7)
+for i in range(0,693):
+    
+    if a[i][5:13]=="20180728":
+        ind_te[k]=int(i);
+        k=k+1
+
+for j in columns_t:
+    temp_file[j]=np.nan
+    
+    
+for j in columns_t:
+    k=0
+    ind_te=np.zeros(8)
+    for ii in range(0,693):
+        if a[ii][5:13]==j:
+           ind_te[k]=ii
+           k=k+1
+    
+    
+    
+for j in columns_t:
+    for i in range(0,8):
+        k=0
+        ind_te=np.zeros(8)
+        for ii in range(0,693):
+            if a[ii][5:13]==j:
+                ind_te[k]=int(ii);
+                k=k+1
+            
+        if(int(ind_te[i]!=0)):
+            print(a[int(ind_te[i])  ])
+            if a[int(ind_te[i])][2:4]=="00":
+                temp_file[j][0]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="01":
+                temp_file[j][1]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="02":
+                temp_file[j][2]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="03":
+                temp_file[j][3]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="04":
+                temp_file[j][4]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="05":
+                temp_file[j][5]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="06":
+                temp_file[j][6]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="07":
+                temp_file[j][7]=a[int(ind_te[i])]
+
+j="20180819"
+   for i in range(0,8):
+        k=0
+        ind_te=np.zeros(8)
+        for ii in range(0,693):
+            if a[ii][5:13]==j:
+                ind_te[k]=int(ii);
+                k=k+1
+            
+        if(int(ind_te[i]!=0)):
+            print(a[int(ind_te[i])  ])
+            if a[int(ind_te[i])][2:4]=="00":
+                temp_file[j][0]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="01":
+                temp_file[j][1]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="02":
+                temp_file[j][2]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="03":
+                temp_file[j][3]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="04":
+                temp_file[j][4]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="05":
+                temp_file[j][5]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="06":
+                temp_file[j][6]=a[int(ind_te[i])]
+            elif a[int(ind_te[i])][2:4]=="07":
+                temp_file[j][7]=a[int(ind_te[i])]     
+
+temp_file["20180728"]=    np.nan
+temp_file.loc[7]        =np.nan
+a[int(ind_te[0])  ]
+columns=list( temp_file.columns   )
+columns_t=columns[4:88]
+for i in columns_t:
+    print(i)
+
+
+
+
+
+for i in range(0,85):
+    te=a2[i].split(".")[0].split("-")[1]
+    j1[i]=str(te)
+for i in range(0,85):
+    boat[j1[i]]=None
+    
+
+      
+
+k=0
+a=pd.DataFrame(a)
+j1=np.zeros(21)
+for i in range(0,693):
+    if(a.iloc[i,0].find("2018-")==5):
+        j1[k]=int(i)
+        k=k+1
+
+a=os.listdir("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\VDR\\");
+base_dir1="Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\VDR\\"
+final1=a[640:651]
+a4=a
+a5=a4
+a4=pd.DataFrame(a)
+
+a5=a4.drop(j1,axis=0)
+a6=a5.reset_index(drop=True)
+
+        
+
+
+
+a3=pd.DataFrame(a)
+k=0
+for index in range(0,693):
+    
+    if a3.iloc[index,0].find("2018-")==5:
+        j1[k]=index
+        k=k+1
+j1=j1[0:21]
+for i in range(0,21):
+    b.remove(b[int(j1[i])])
+   
+
+
+a3.iloc[3,0].find("2018-")==5
+a3.iloc[:,0].find("2018-")>1
+del a[520]
+boat.iloc[1,5]=4
+a3=pd.DataFrame(a)
+a3.where(a3=="SI00-2018-07-25.txt").index
+
+
+
+
+te=a[1].split(".")[0].split("-")[1]
+
+def dateRange(beginDate, endDate):
+    dates = []
+    dt = datetime.datetime.strptime(beginDate, "%Y-%m-%d")
+    date = beginDate[:]
+    while date <= endDate:
+        dates.append(date)
+        dt = dt + datetime.timedelta(1)
+        date = dt.strftime("%Y-%m-%d")
+    return dates
+ 
+
+    for date in dateRange('2018-07-25', '2018-11-05'):
+        print (date)
+
+
+data = pd.read_csv("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\MFM\\MFM-20180723-AI1011.txt", sep="/n", header = None)
+final1=a
+final1=final
+final1=final[427:509]
+
+jtemp1=np.zeros(170006)
+jtemp1=pd.DataFrame(jtemp1)
+jtemp1.columns=(["time"])
+jtemp1["type"]=None
+jtemp1["content of 2"]=None
+
+
+
+k=0
+
+for i in final1:
+    df1 = pd.read_csv(base_dir1+i, sep="/n", header = None)
+    temp=df1[0][1].split(",")[0]
+    temp[len(temp)-1]
+    k=k+1
+
+
+
+
+for fi in final1:
+    data = pd.read_csv(os.path.join(base_bone_dir, fi), sep="/n", header = None)
+k=0
+for fi in final1[5:]:
+    data = pd.read_csv(os.path.join(base_dir1, fi), sep="/n", header = None,engine="python")
+    
+    for  j in range(0,len(data)):
+        if data.iloc[j,0][len(data.iloc[j,0])-1]=="2" :
+            temp=data[0][j].split(",")
+            jtemp1["time"][k]=data[0][j].split(",")[0]
+            jtemp1["type"][k]=data[0][j].split(",")[1]
+            jtemp1.iloc[k,2]=data[0][j].split(",")[2:len(temp)];
+            print(k)
+            k=k+1
+            jtemp1.to_csv("D:\\桌面\\1234.csv")  
