@@ -1,0 +1,32 @@
+ab=os.listdir("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\VDR\\");
+a=ab[384:391]
+
+
+app=[]
+
+for iiii in a:
+    data = pd.read_csv(base_dir_VDR+iiii, sep="/n", header = None)      
+    for i in range(0,len(data)-1):
+        if data.iloc[i,0][0]=="$":
+            app.append(data.iloc[i,0])
+        elif data.iloc[i,0][0]!="$":
+            aa1=data[0][i].split(",")[0]            
+        
+        
+        if data.iloc[i+1,0][0]!="$":
+            aa2=data[0][i+1].split(",")[0]        
+            date=datetime.strptime(aa1,'%Y-%m-%d %H:%M:%S')
+            date1=datetime.strptime(aa2,'%Y-%m-%d %H:%M:%S')
+            ch=(date1-date).seconds    
+            if ch !=10 and ch !=0:
+                print(i)
+                app.append(data.iloc[i,0])
+        elif data.iloc[i,0][0]=="$":
+            app.append(data.iloc[i,0])
+        
+            
+            
+            
+temp_file=pd.DataFrame(app)            
+temp_file.to_csv("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\VDR\\其他\\time\\SI02.csv")
+            
