@@ -1,3 +1,9 @@
+import os
+import pandas as pd
+import numpy  as np
+from datetime import datetime
+from datetime import timedelta
+
 ab=os.listdir("Z:\\智慧海運與船舶能源管理之數據分析\\船舶大數據資料\\團明輪\\VDR\\");
 a=ab[384:391]
 
