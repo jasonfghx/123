@@ -1,0 +1,22 @@
+aab2017=os.listdir('D:\\桌面\\2016\\')
+
+list_num=['01','02','03','04','05','06','07','08','09','10','11','12']
+for i in list_num:
+    os.mkdir('D:\\桌面\\temp\\2019'+i)
+for i in list_num:
+    os.mkdir('D:\\桌面\\temp\\2017'+i)    
+for i in list_num:
+    os.mkdir('D:\\桌面\\temp\\2018'+i)      
+file=os.listdir('D:\\桌面\\temp\\')
+
+for j in file:
+    
+    for k in list_num:
+        app2016_1 = []
+        for iii in range(0,len(aab2017)):
+            if aab2017[iii].find('2018'+k)!=-1:
+                app2016_1.append(aab2017[iii]) 
+        for ii in range(0,len(app2016_1)):
+            shutil.move('D:\\桌面\\2016\\'+app2016_1[ii], 'D:\\桌面\\temp\\2018'+str(k)+'\\'+app2016_1[ii])                
+            print(app2016_1[ii])
+        
