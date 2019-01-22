@@ -1,0 +1,45 @@
+import os
+import pandas as pd
+import numpy  as np
+import sys
+from datetime import datetime
+from datetime import timedelta
+from tqdm import tqdm
+import requests
+from bs4 import BeautifulSoup
+sys.setrecursionlimit(10000000)
+google_url='https://www.yangming.com/e-service/Vessel_Tracking/vessel_tracking_detail.aspx?vessel=YM%20UNIFORMITY|YUNF&&func=current&&LocalSite='
+r = requests.get(google_url)
+soup=BeautifulSoup(r.text,"html.parser")
+html_data1=soup.find_all("tr",class_="field_even")
+
+
+
+a=html_data1[0].find_all("span")
+
+
+table=pd.DataFrame(np.zeros(3))
+table.columns=['ship name']
+table['arrival']=None
+table['ship name'][0]='UNIFORMITY'
+table['ship name'][1]='UBIQUITY'
+table['ship name'][2]='UNANIMITY'
+table['arrival'][0]=a[2].text
+
+google_url='https://www.yangming.com/e-service/Vessel_Tracking/vessel_tracking_detail.aspx?vessel=YM%20UBIQUITY|YUBI&&func=current&&LocalSite='
+r = requests.get(google_url)
+soup=BeautifulSoup(r.text,"html.parser")
+html_data1=soup.find_all("tr",class_="field_even")
+a=html_data1[0].find_all("span")
+
+
+table['arrival'][1]=a[2].text
+google_url='https://www.yangming.com/e-service/Vessel_Tracking/vessel_tracking_detail.aspx?vessel=YM%20UNANIMITY|YUNA&&func=current&&LocalSite='
+r = requests.get(google_url)
+soup=BeautifulSoup(r.text,"html.parser")
+html_data1=soup.find_all("tr",class_="field_even")
+a=html_data1[0].find_all("span")
+
+table['arrival'][2]=a[2].text
+
+print(table)
