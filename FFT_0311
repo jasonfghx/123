@@ -1,0 +1,110 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from scipy.fftpack import fft, ifft,fftfreq
+import os
+from tqdm import tqdm
+new=[]
+old=os.listdir('F:\\190308震明震動資料\\09D4_TX Folder')
+for i in range(0,len(old)):
+    if old[i].find('Transmit_Streaming_Ch_Z')==0:
+        new.append(old[i])
+ #len(new)
+ 
+ 
+for j in tqdm(range(0,len(new))):
+    
+    try:
+        f = open('D:\\桌面\\Transmit_Streaming_Ch_Z_MAC_ID___0_x_00158D00000E0A1C_2019_3_8_上午_09_14_25.txt','r',encoding="utf-8")#要讀取的資料夾位置
+        text = []
+        for line in f:
+            text.append(line)
+            
+     
+    
+        text_s=[]
+        for ii in range (0,len(text)):
+            if text[ii].find(';')>=1 and text[ii].find('.')>=1:
+                text_s.append(text[ii].replace('\n',''))
+        dataf=np.zeros(len(text_s))
+        data_fr=pd.DataFrame(dataf)
+        data_fr.columns=["time"]
+        data_fr["amp"]=None
+        for i in tqdm(range(0,len(text_s))):
+            data_fr.iloc[i,0]=float(text_s[i].split(';')[0])
+            data_fr.iloc[i,1]=float(text_s[i].split(';')[1])        
+        #x = data_fr["time"]
+        #y=data_fr["amp"]
+        #yf = fft(y)
+        #start_time = 0 # seconds
+
+
+        
+        sig_fft = fft(data_fr["amp"])
+        time_step=1/(400)
+        power = np.abs(sig_fft)
+        sample_freq = fftfreq(data_fr["amp"].size, d=time_step)
+        indexx=int(sample_freq.shape[0]/2)-2
+        fina=pd.DataFrame(sample_freq[0:indexx])
+        fina.columns=["Frequency (Hz)"]
+        fina['Vibration (g)']= power[0:indexx]
+        
+        
+
+
+        #yr = fft(y) # "raw" FFT with both + and - frequencies
+        #y = 2/N * np.abs(yr[0:np.int(N/2)]) # positive freqs only
+        #if x1.shape[0]>100:
+        #    fina=pd.DataFrame(x1[1:100])
+        #    fina.columns=["Frequency (Hz)"]
+        #    fina['Vibration (g)']=y[1:100]
+        #elif x1.shape[0]<=100:
+        #    fina=pd.DataFrame(x1[0:int((len(x1)/2))])
+        #    fina.columns=["Frequency (Hz)"]
+        #    fina['Vibration (g)']=y
+
+        fina.to_csv("D:/振動/輸出/"+new[j],encoding='utf-8')        
+    except Exception:
+        j=j+1
+     
+'''
+new1=os.listdir('D:\\振動\\匯入\\')        
+for j in tqdm(range(0,len(new1))):
+    try:
+        f = open('D:\\振動\\匯入\\'+new[j],'r',encoding="utf-8")#要讀取的資料夾位置
+        text = []
+        for line in f:
+            text.append(line)        
+    except Exception:
+        j=j+1            
+''' 
+
+exa=pd.read_csv('D:\\桌面\\Transmit_Streaming_Ch_Z_MAC_ID___0_x_00158D00000E0A1C_2019_3_8_上午_09_14_25.txt',sep=',')
+temp=fina['Vibration (g)'][1:]*0.03+1
+
+plt.figure(figsize=(6, 5))
+plt.plot(fina['Frequency (Hz)'][1:],temp)
+plt.xlabel('Frequency [Hz]')
+plt.ylabel('power')
+
+0.18 1.08
+1637  1.16
+1.16  1.03
+  
+
+
+plt.figure(figsize=(6, 5))
+plt.plot(fina["Frequency (Hz)"][1:],fina['Vibration (g)'][1:])
+plt.xlabel('Frequency [Hz]')
+plt.ylabel('power')
+
+fina["Vibration (g)"][26]
+fina["Frequency (Hz)"][26]
