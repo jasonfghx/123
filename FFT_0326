@@ -1,0 +1,59 @@
+import pandas as pd
+import numpy as np
+from scipy.fftpack import fft, ifft, fftfreq
+import matplotlib.pyplot as plt
+import os
+from tqdm import tqdm
+name=os.listdir('D:\\桌面\\190308震明震動資料\\temp\\')
+name=name[1081:]
+name[2]
+j=2
+for j in tqdm(range(0,len(name))):
+    
+    try:
+        f = open('D:\\桌面\\190308震明震動資料\\temp\\'+name[j],'r',encoding="utf-8")#要讀取的資料夾位置
+        text = []
+        for line in f:
+            text.append(line)
+        text_s=[]
+        for ii in range (0,len(text)):
+          if text[ii].find(';')>=1 and text[ii].find('.')>=1:
+            text_s.append(text[ii].replace('\n',''))        
+        dataf=np.zeros(len(text_s))
+        data_fr=pd.DataFrame(dataf)
+        data_fr.columns=["time"]
+        data_fr["amp"]=None
+        for i in tqdm(range(0,len(text_s))):
+          data_fr.iloc[i,0]=float(text_s[i].split(';')[0])*1/400
+#   data_fr.iloc[i,0]=float(text_s[i].split(';')[0])
+          data_fr.iloc[i,1]=float(text_s[i].split(';')[1])
+        sig_fft = fft(data_fr["amp"])
+
+        time_step=1/400
+        power = np.abs(sig_fft)
+        sample_freq = fftfreq(data_fr["amp"].size, d=time_step)
+        indexx=int(sample_freq.shape[0]/2)
+        
+        fina=pd.DataFrame(sample_freq[0:indexx])
+        fina.columns=["Frequency (Hz)"]
+        fina['Vibration (g)']= power[0:indexx]
+        plt.figure(figsize=(5, 5))
+        plt.plot(fina['Frequency (Hz)'][1:], fina['Vibration (g)'][1:])
+        plt.xlabel('Frequency [Hz]')
+        plt.ylabel('power')
+        plt.ylim((0,40))
+        plt.savefig('E:\\我的雲端硬碟\邵老師的事\\振動\\190308震明震動資料\\軸_圖\\'+name[j].split('.')[-2]+'.jpg')
+        plt.show()
+    except Exception:
+        j=j+1
+  
+    
+    
+        fina=pd.DataFrame(sample_freq)
+        fina.columns=["Frequency (Hz)"]
+        fina['Vibration (g)']= power
+        plt.figure(figsize=(5, 5))
+        plt.plot(fina['Frequency (Hz)'][1:], fina['Vibration (g)'][1:])
+        plt.xlabel('Frequency [Hz]')
+        plt.ylabel('power')
+        plt.ylim((0,40))
