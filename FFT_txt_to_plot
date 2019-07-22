@@ -1,0 +1,61 @@
+import pandas as pd
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+from tqdm import tqdm
+print("------------------------")
+print("this app is transformation from txt file to graph")
+path=input("please enter address of input file  :  ")
+path1=input("please enter address of output file  :  ")
+
+name=os.listdir(path)
+for jj in tqdm(name):
+  f = open(path+'\\'+jj,'r',encoding="utf-8")#要讀取的資料夾位置
+  text = []
+  for line in f:
+    text.append(line)
+    text_s=[]
+  for ii in (range (0,len(text))):
+    if text[ii].find(';')>=1 and text[ii].find('.')>=1:
+      text_s.append(text[ii].replace('\n',''))        
+  dataf=np.zeros(len(text_s))
+  data_fr=pd.DataFrame(dataf)
+  data_fr.columns=["time"]
+  data_fr["amp"]=None
+  for i in tqdm(range(0,len(text_s))):
+    data_fr.iloc[i,0]=float(text_s[i].split(';')[0])
+    data_fr.iloc[i,1]=float(text_s[i].split(';')[1])
+  temp=text[24].split(" ")
+  
+  if temp[3]=="上午":
+      if temp[4][0:2]=="12":
+          title=temp[2].replace("/","-")+" "+temp[4].replace(":","-").replace("\n","")
+          b=title.split(" ")
+          title=b[0]+" "+b[1][0:2].replace("12","00")+b[1][2:]
+      else:
+          title=temp[2].replace("/","-")+" "+temp[4].replace(":","-").replace("\n","")
+  
+  elif temp[3]=="下午":
+      temp1=temp[4].replace(":","-").replace("\n","")
+      temp2=temp1.split("-")
+      time=str(int(temp2[0])+12)
+      title=temp[2].replace("/","-")+" "+str(time)+"-"+temp2[1]+"-"+temp2[2] 
+  else:
+      title=temp[2]+" "+temp[3][0:8]
+      title=title.replace("/","-")
+      title=title.replace(":","-")
+      
+  
+  
+
+  plt.figure(figsize=(6, 5))
+  plt.xlabel('Frequency [Hz]')
+  plt.ylabel('amplitude')
+  plt.plot(data_fr.iloc[:,0],data_fr.iloc[:,1]) 
+  
+  plt.savefig(path1+"\\"+title+".jpg")
+  
+  
+  
+  
+  
