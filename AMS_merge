@@ -1,0 +1,38 @@
+import pandas as pd
+import os
+import numpy as np
+import time
+from datetime import datetime
+from datetime import timedelta
+from tqdm import tqdm
+
+print("------------------------")
+print("this app is to merge revolution and vibration data into one file")
+path=input("please enter address of input file : ")
+
+filename=os.listdir(path)
+filename.sort()
+
+timelist=[]
+for i in range(0,len(filename)):
+  time=filename[i].split("_")[2][0:8]+" "+filename[i].split("_")[2][8:12]
+  newtime=time[0:4]+"/"+time[4:6]+"/"+time[6:8]+" "+time[9:11]+":"+time[11:13]
+  timelist.append(newtime)
+  
+  
+data=pd.DataFrame({"time":timelist})
+data["vibration(mm)"]=None
+data["RPM"]=None
+
+for i in tqdm(range(0,len(filename))):
+  file=pd.read_csv(path+"\\"+filename[i],header=None)
+  ind=file[0][file[0]==1014].index.values[0]
+  ind1=file[0][file[0]==1002].index.values[0]
+  data.iloc[i,1]=file.iloc[ind,4]
+  data.iloc[i,2]=file.iloc[ind1,4]  
+
+
+path2=input("please enter address to save the file : ")
+
+name=input("please enter the name of file(use .csv as filename extension) : ")
+data.to_csv(path2+'\\'+name,index=False)
