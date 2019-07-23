@@ -1,0 +1,35 @@
+import pandas as pd
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+from tqdm import tqdm
+print("------------------------")
+print("this app is transformation from txt file to graph")
+path=input("please enter address of input file  :  ")
+path1=input("please enter address of output file  :  ")
+dataname=["data1","data2","data3","data4","data5","data6","data7","data8","data9"]
+i1=0
+d = {}
+name=os.listdir(path)
+for jj in tqdm(name):
+  f = open(path+'\\'+jj,'r',encoding="utf-8")#要讀取的資料夾位置
+  text = []
+  for line in f:
+    text.append(line)
+    text_s=[]
+  for ii in (range (0,len(text))):
+    if text[ii].find(';')>=1 and text[ii].find('.')>=1:
+      text_s.append(text[ii].replace('\n',''))        
+  dataf=np.zeros(len(text_s))
+  data_fr=pd.DataFrame(dataf)
+  data_fr.columns=["time"]
+  data_fr["amp"]=None
+  for i in tqdm(range(0,len(text_s))):
+    data_fr.iloc[i,0]=float(text_s[i].split(';')[0])
+    data_fr.iloc[i,1]=float(text_s[i].split(';')[1])
+  dd=data_fr.iloc[:,1]
+  ge=getEnvelope(dd)
+  d.setdefault(dataname[i1],ge)       
+  i1=i1+1
+with open("dict1.json",'w') as f:
+    json.dump(d,f)  
