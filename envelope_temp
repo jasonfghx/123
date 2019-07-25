@@ -1,0 +1,278 @@
+import pandas as pd
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+import json
+from tqdm import tqdm
+print("------------------------")
+print("this app is transformation from txt file to graph")
+path=input("please enter address of input file  :  ")
+path1=input("please enter address of output file  :  ")
+dataname=["data1","data2","data3","data4","data5","data6","data7","data8","data9","data10","data11","data12","data13","data14","data15","data16","data17","data18"]
+i1=0
+d = {}
+name=os.listdir(path)
+for jj in tqdm(name[0:2]):
+  f = open(path+'\\'+jj,'r',encoding="utf-8")#要讀取的資料夾位置
+  text = []
+  for line in f:
+    text.append(line)
+    text_s=[]
+  for ii in (range (0,len(text))):
+    if text[ii].find(';')>=1 and text[ii].find('.')>=1:
+      text_s.append(text[ii].replace('\n',''))        
+  dataf=np.zeros(len(text_s))
+  data_fr=pd.DataFrame(dataf)
+  data_fr.columns=["time"]
+  data_fr["amp"]=None
+  for i in tqdm(range(0,len(text_s))):
+    data_fr.iloc[i,0]=float(text_s[i].split(';')[0])
+    data_fr.iloc[i,1]=float(text_s[i].split(';')[1])
+  print(jj)
+  dd=data_fr.iloc[:,1]
+  ge=getEnvelope(dd)
+  d.setdefault(dataname[i1],ge)       
+  i1=i1+1
+  
+  
+with open("dict6_1_1500.json",'w') as f:
+  json.dump(d,f)    
+  
+  temp=text[24].split(" ")
+  axis=text[14].split("_")[1][0]
+  
+  if temp[3]=="上午":
+      if temp[4][0:2]=="12":
+          title=temp[2].replace("/","-")+" "+temp[4].replace(":","-").replace("\n","")
+          b=title.split(" ")
+          title=b[0]+" "+b[1][0:2].replace("12","00")+b[1][2:]
+      else:
+          title=temp[2].replace("/","-")+" "+temp[4].replace(":","-").replace("\n","")
+  
+  elif temp[3]=="下午":
+      temp1=temp[4].replace(":","-").replace("\n","")
+      temp2=temp1.split("-")
+      time=str(int(temp2[0])+12)
+      title=temp[2].replace("/","-")+" "+str(time)+"-"+temp2[1]+"-"+temp2[2] 
+  else:
+      title=temp[2]+" "+temp[3][0:8]
+      title=title.replace("/","-")
+      title=title.replace(":","-")
+      
+  
+  
+
+  plt.figure(figsize=(6, 5))
+  plt.xlabel('Frequency [Hz]')
+  plt.ylabel('amplitude')
+  plt.plot(data_fr.iloc[:,0],data_fr.iloc[:,1]) 
+  plt.title(axis+"_"+title)
+  title=axis+"_"+title
+  plt.savefig(path1+"\\"+title+".jpg")
+  
+
+
+
+
+def getEnvelope (inputSignal):
+
+    # Taking the absolute value
+
+    absoluteSignal = []
+    for sample in inputSignal:
+        absoluteSignal.append (abs (sample))
+
+    # Peak detection
+
+    intervalLength = 1500 # Experiment with this number, it depends on your sample frequency and highest "whistle" frequency
+    outputSignal = []
+
+    for baseIndex in range (intervalLength, len (absoluteSignal)):
+        maximum = 0
+        for lookbackIndex in range (intervalLength):
+            maximum = max (absoluteSignal [baseIndex - lookbackIndex], maximum)
+        outputSignal.append (maximum)
+
+    return outputSignal
+
+
+
+a= np.linspace(0, 200,len(getEnvelope(dd)))
+b= np.linspace(0, 200,len(a))
+
+plt.figure(figsize=(6, 5))
+plt.ylim(0,0.07)
+plt.plot(b,a)
+
+b= np.linspace(0, 200,len(ge_temp))
+
+plt.figure(figsize=(6, 5))
+plt.ylim(0,0.01)
+plt.plot(b,ge_temp)
+plt.figure(figsize=(6, 5))
+plt.plot(data_fr.iloc[:,0],dd)
+
+
+
+dd=data_fr.iloc[:,1]
+ge=getEnvelope(dd)
+
+fft1=d["data1"]
+fft2=d["data2"]
+fft3=d["data11"]
+fft4=d["data12"]
+fft5=d["data13"]
+fft6=d["data14"]
+fft7=d["data15"]
+fft8=d["data16"]
+fft9=d["data17"]
+fft10=d["data2"]
+fft11=d["data3"]
+fft12=d["data4"]
+fft13=d["data5"]
+fft14=d["data6"]
+fft15=d["data7"]
+fft16=d["data8"]
+fft17=d["data9"]
+
+
+
+
+
+
+time=list(np.linspace(0, 200,len(fft2)))
+f_data=pd.DataFrame({"time":time,"g value":fft2})
+
+df1=f_data.iloc[0,:]
+for j in range(1500,f_data.shape[0],1500):
+    df2=f_data.iloc[j,:]
+    df1 = pd.concat([df1, df2], axis=1)
+df1=df1.T
+
+data2=df1.copy()
+
+
+
+
+data4=data_fr.copy()
+
+
+
+
+
+
+
+
+plt.figure(figsize=(100, 70),dpi=100)
+
+
+plt.ylim(0.002,0.009)
+plt.xlabel("frequency(Hz)",fontsize=160)
+plt.ylabel("g value",fontsize=160)
+
+plt.xlabel("frequency(Hz)")
+plt.ylabel("g value")
+plt.title("envelope curve for vibration of YM MUTUALITY")
+plt.plot(data1["time"],data1["g value"],label="2019/6/7 07:41:50 -- 0.59mm -- 77.1RPM ",linewidth = 5)
+plt.plot(data2["time"],data2["g value"],label="2019/6/7 07:41:50 -- 0.59mm -- 77.1RPM ",linewidth = 5)
+plt.plot(data3["time"],data3["g value"],label="2019/6/7 07:41:50 -- 0.59mm -- 77.1RPM ",linewidth = 5)
+plt.plot(data4["time"],data4["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data5["time"],data5["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data6["time"],data6["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data7["time"],data7["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data8["time"],data8["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data9["time"],data9["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data10["time"],data10["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data11["time"],data11["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data12["time"],data12["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data13["time"],data13["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data14["time"],data14["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data15["time"],data15["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data16["time"],data16["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.plot(data17["time"],data17["g value"],label="2019/6/7 07:46:54 -- 0.54mm -- 77.3RPM ",linewidth = 5)
+plt.tick_params(labelsize=100)
+plt.legend(loc='best',fontsize = 70)
+plt.savefig("12345.jpg")
+
+
+
+loc=2, bbox_to_anchor=(1.05,1.0),borderaxespad = 0.
+
+
+aa=np.zeros(10)
+store=pd.DataFrame(aa)
+store.iloc[0,0]=(ge)
+
+
+
+plt.plot(np.linspace(0, 200,len(b1)),b1,label="2019/6/7 08:02:06")
+
+
+
+import json
+
+dict1 = {'data1' : fft1, 'data2' : fft2, 'data3' : fft3,'data4' : fft4,"data5":fft5}
+
+ge=dict1["data4"]
+
+json = json.dumps(dict1)
+f = open("dict.json","w")
+f.write(json)
+f.close()
+
+
+a=pd.read_json("dict.json")
+
+
+
+f=open("dict.json","r")
+
+with open("Z:\\翔斌\\dict7_all_1500.json", 'r') as f:
+    d = json.load(f)
+    
+    
+   
+    
+    
+    
+d = {'s':'you','d':'are'} 
+j = json.dumps(d)    
+type(d1)
+d1 = json.loads(j)
+
+
+plt.figure(figsize=(100, 70),dpi=100)
+
+
+plt.ylim(0.002,0.009)
+plt.xlabel("frequency(Hz)",fontsize=160)
+plt.ylabel("g value",fontsize=160)
+plt.title("envelope curve for vibration of YM MUTUALITY",fontsize=120)
+plt.plot(np.linspace(0, 200,len(fft1)),fft1,label="2019/6/13 13:07:30 -- 0.57mm -- 68.3RPM ",linewidth = 50)
+plt.plot(np.linspace(0, 200,len(fft2)),fft2,label="2019/6/13 13:12:34 -- 0.68mm -- 68.1RPM ",linewidth = 50)
+plt.plot(np.linspace(0, 200,len(fft3)),fft3,label="2019/6/13 14:23:33 -- 0.44mm -- 68.3RPM ",linewidth = 50)
+plt.plot(np.linspace(0, 200,len(fft4)),fft4,label="2019/6/13 14:48:53 -- 1.04mm -- 68.1RPM ",linewidth = 50)
+plt.plot(np.linspace(0, 200,len(fft5)),fft5,label="2019/6/13 15:29:25 -- 0.78mm -- 67.8RPM ",linewidth = 50)
+plt.plot(np.linspace(0, 200,len(fft6)),fft6,label="2019/6/14 04:19:51 -- 1.07mm -- 68.2RPM ",linewidth = 50)
+plt.plot(np.linspace(0, 200,len(fft7)),fft7,label="2019/6/14 09:08:39 -- 1.22mm -- 68.0RPM ",linewidth = 50)
+plt.plot(np.linspace(0, 200,len(fft8)),fft8,label="2019/6/14 11:40:39 -- 0.44mm -- 68.1RPM ",linewidth = 50)
+plt.plot(np.linspace(0, 200,len(fft9)),fft9,label="2019/6/14 04:39:03 -- 0.52mm -- 68.0RPM ",linewidth = 50)
+plt.plot(np.linspace(0, 200,len(fft10)),fft10,label="2019/6/15 11:39:41 -- 1.26mm -- 68.1RPM ",linewidth = 50)
+
+plt.tick_params(labelsize=100)
+plt.legend(loc='best',fontsize = 70)
+plt.savefig("12345.jpg")
+
+
+
+
+plt.plot(fft1["time"],fft1["g value"],label="2019/6/7 07:36:46 -- 0.45mm -- 77.2RPM ",linewidth = 5)
+
+  plt.figure(figsize=(6, 5))
+  plt.xlabel('Frequency [Hz]')
+  plt.ylabel('amplitude')
+  plt.plot(data_fr.iloc[1:,0],data_fr.iloc[1:,1]) 
+
+
+
+        
