@@ -1,0 +1,114 @@
+import pandas as pd
+import os
+import numpy as np
+
+
+import time
+from datetime import datetime
+from datetime import timedelta
+from tqdm import tqdm
+
+print("------------------------")
+print("this app is to find missing time of data")
+path=input("please enter address of input file : ")
+
+
+
+#filename=os.listdir(path)
+
+path2=input("please enter address to save the file : ")
+
+
+print("請輸入資料的間隔時間，若為10s輸入\"1\"，若是5分鐘輸入\"2\"")
+boat=input()
+
+if boat==1:
+    timelist1=[]
+    tempstr="00:00:00"
+    timelist1.append(tempstr)
+    delta=timedelta(seconds=10)
+    for i in range(0,8639):
+        date1=datetime.strptime("00:00:00",'%H:%M:%S')+delta*(i+1)
+        tempstr=datetime.strftime(date1,'%H:%M:%S')
+        timelist1.append(tempstr)
+elif boat==2:
+    timelist1=[]
+    tempstr="00:00:00"
+    timelist1.append(tempstr)
+    delta=timedelta(minutes=5)
+    for i in range(0,287):
+        date1=datetime.strptime(data[0][0].split(",")[0][11:19],'%H:%M:%S')+delta*(i+1)
+        tempstr=datetime.strftime(date1,'%H:%M:%S')
+        timelist1.append(tempstr)   
+
+
+select=input("Is it \"YM\", yes or no, type y or n: ")    
+#filename=list(filenames[0])
+#   date1=datetime.strptime(data[0][0].split(",")[0][11:19],'%H:%M:%S')+delta*(i+1)
+
+try:
+    file_name=path.split("\\")[-3]+path.split("\\")[-1]
+    os.mkdir(path2+'/'+file_name)
+except Exception:
+        pass
+
+tempfile=os.listdir(path)
+
+count=[]
+name=[]
+if select=='y':
+    for fi in tqdm(tempfile):
+        if fi.startswith("YM"):
+            try:
+                data = pd.read_csv(jj+'\\'+fi, sep="/n", header = None)
+                temp=[]
+                temp2=[]
+                for j in range(0,len(data[0])):
+                    if data[0][j][-1]=='2':
+                        temp2.append(data[0][j][11:19])
+                        #      temp.append(data[0][j][11:19])
+                retD = list(set(timelist1).difference(set(temp)))
+                retD=retD+temp2
+                retD.sort()
+                tempda=pd.DataFrame({"lost_time":retD})
+            except Exception:
+                pass
+            try:
+                tempda.to_csv(path2+'/'+file_name+'/'+fi.split(".")[0]+"_lost.csv")   
+                count.append(len(retD))
+            except Exception:
+                pass
+            name.append(fi.split(".")[0])
+    
+      
+    stat=pd.DataFrame({"file name":name,"缺失筆數":count})  
+    stat.to_csv(path2+'/'+file_name+'/'+"YM_total.csv",index=False,encoding="big5")  
+else:
+    for fi in tqdm(tempfile):
+        if fi.startswith("YM")==False:
+            try:
+                data = pd.read_csv(jj+'\\'+fi, sep="/n", header = None)
+                temp=[]
+                temp2=[]
+                for j in range(0,len(data[0])):
+                    if data[0][j][-1]=='2':
+                        temp2.append(data[0][j][11:19])
+                        #      temp.append(data[0][j][11:19])
+                retD = list(set(timelist1).difference(set(temp)))
+                retD=retD+temp2
+                retD.sort()
+                tempda=pd.DataFrame({"lost_time":retD})
+            except Exception:
+                pass
+            try:
+                tempda.to_csv(path2+'/'+file_name+'/'+fi.split(".")[0]+"_lost.csv")   
+                count.append(len(retD))
+            except Exception:
+                pass
+            name.append(fi.split(".")[0])
+    
+      
+    stat=pd.DataFrame({"file name":name,"缺失筆數":count})  
+    stat.to_csv(path2+'/'+file_name+'/'+"total.csv",index=False,encoding="big5")  
+
+
