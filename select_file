@@ -82,7 +82,7 @@ for ii in range(0,AMS_new2.shape[0]):
         com_time1=datetime.strptime(time, '%Y/%m/%d %H:%M:%S')
         temp=AMS_new2.iloc[ii,0]+":00"
         com_time2=datetime.strptime(temp, '%Y/%m/%d %H:%M:%S')
-        if (com_time2-com_time1).seconds<150:
+        if abs(com_time2-com_time1).seconds<150:
             print(timelist[i])
             search.append(time)
             break
