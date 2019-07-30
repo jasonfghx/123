@@ -1,0 +1,121 @@
+import pandas as pd
+import os
+import numpy as np
+import time
+from datetime import datetime
+from datetime import timedelta
+from tqdm import tqdm
+import shutil
+
+print("------------------------")
+print("this app search the file")
+path=input("please enter address of input file : ")
+
+filename=os.listdir(path)
+filename.sort()
+
+timelist=[]
+for i in range(0,len(filename)):
+    ele=filename[i].split("_")
+    if ele[14]=="上午":
+        if ele[15]=="12":
+            ele[15]="00"
+            title=ele[3]+"_"+ele[11]+"/"+ele[12]+"/"+ele[13]+" "+ele[15]+":"+ele[16]+":"+ele[17].split(".")[0]
+        else:
+            title=ele[3]+"_"+ele[11]+"/"+ele[12]+"/"+ele[13]+" "+ele[15]+":"+ele[16]+":"+ele[17].split(".")[0]
+    elif ele[14]=="下午":
+        if ele[15]!="12":
+            ele[15]=str(int(ele[15])+12)
+            title=ele[3]+"_"+ele[11]+"/"+ele[12]+"/"+ele[13]+" "+ele[15]+":"+ele[16]+":"+ele[17].split(".")[0]
+        else:
+            title=ele[3]+"_"+ele[11]+"/"+ele[12]+"/"+ele[13]+" "+ele[15]+":"+ele[16]+":"+ele[17].split(".")[0]
+    timelist.append(title)
+    #timelist.sort()
+
+timelist.sort()
+filename.sort()
+d={}
+for i1 in range(0,len(filename)):
+    d.setdefault(timelist[i1],filename[i1]) 
+
+entertime1=input("enter start time:")
+entertime2=input("enter end time:")
+
+time1=datetime.strptime(entertime1, '%Y/%m/%d %H:%M:%S')
+time2=datetime.strptime(entertime2, '%Y/%m/%d %H:%M:%S')
+
+want=[]
+for i in range(0,len(timelist)):
+    temptime=timelist[i].split("_")[1]
+    date_temptime=datetime.strptime(temptime, '%Y/%m/%d %H:%M:%S')
+    if date_temptime<time2 and date_temptime>time1:
+        want.append(timelist[i])
+        
+print("------------------------")
+print("please load the AMS file")     
+path1=input("enter address of AMS file:")
+nameAMS=input("enter name of AMS file:")
+
+AMS=pd.read_csv(path1+'/'+nameAMS)
+
+print("------------------------")
+print("please enter the range of vibration displacement(mm) you want to search")     
+vi1=float(input("enter lower limit:"))
+vi2=float(input("enter higher limit:"))
+
+if vi1>vi2:
+    print("error")
+    os.system("shutdown")
+    
+print(12)    
+AMS_new1=AMS[AMS["vibration(mm)"]>vi1]
+
+AMS_new2=AMS_new1[AMS_new1["vibration(mm)"]<vi2]
+
+AMS_new2.reset_index(drop=True)
+
+search=[]
+
+for ii in range(0,AMS_new2.shape[0]):
+    for i in range(0,len(timelist)):
+        time=timelist[i].split("_")[1]
+        com_time1=datetime.strptime(time, '%Y/%m/%d %H:%M:%S')
+        temp=AMS_new2.iloc[ii,0]+":00"
+        com_time2=datetime.strptime(temp, '%Y/%m/%d %H:%M:%S')
+        if (com_time2-com_time1).seconds<150:
+            print(timelist[i])
+            search.append(time)
+            break
+    
+        
+
+l2 = list(set(search))    
+
+filenamefinal=[]
+for i in tqdm(l2):
+    try:
+        filenamefinal.append(d["X_"+i])
+    except Exception:
+        pass
+    try:
+        filenamefinal.append(d["Y_"+i])
+    except Exception:
+        pass
+    try:
+        filenamefinal.append(d["Z_"+i])
+    except Exception:
+        pass
+    
+    
+path3=(input("where to save the file:"))    
+for i in tqdm(filenamefinal):
+    try:
+        shutil.copy(path+'/'+i,path3+'/'+i)    
+    except Exception:
+        pass
+    
+
+
+
+
+
