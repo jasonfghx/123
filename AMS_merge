@@ -36,3 +36,6 @@ path2=input("please enter address to save the file : ")
 
 name=input("please enter the name of file(use .csv as filename extension) : ")
 data.to_csv(path2+'\\'+name,index=False)
+
+
+https://medium.com/pyladies-taiwan/python-%E5%B0%87python%E6%89%93%E5%8C%85%E6%88%90exe%E6%AA%94-32a4bacbe351
