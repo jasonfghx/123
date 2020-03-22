@@ -24,6 +24,7 @@ data=pd.DataFrame({"time":timelist})
 data["vibration(mm)"]=None
 data["RPM"]=None
 
+
 for i in tqdm(range(0,len(filename))):
   file=pd.read_csv(path+"\\"+filename[i],header=None)
   ind=file[0][file[0]==1014].index.values[0]
